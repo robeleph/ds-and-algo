@@ -1,3 +1,4 @@
+import java.util.ArrayList; // import the ArrayList class
 public class DecompressEncodedList {
     public int[] decompressRLElist(int[] nums) {
         ArrayList<Integer> compressedNum = new ArrayList<Integer>();
