@@ -1,0 +1,57 @@
+import java.util.*;
+
+class ConnectPeople {
+    public static void main(String[] args) {
+        String[][] events = {
+            {"CONNECT", "Alice", "Bob"},
+            {"DISCONNECT", "Bob", "Alice"},
+            {"CONNECT", "Alice", "Charlie"},
+            {"CONNECT", "Dennis", "Bob"},
+            {"CONNECT", "Pam", "Dennis"},
+            {"DISCONNECT", "Pam", "Dennis"},
+            {"CONNECT", "Pam", "Dennis"},
+            {"CONNECT", "Edward", "Bob"},
+            {"CONNECT", "Dennis", "Charlie"},
+            {"CONNECT", "Alice", "Nicole"},
+            {"CONNECT", "Pam", "Edward"},
+            {"DISCONNECT", "Dennis", "Charlie"},
+            {"CONNECT", "Dennis", "Edward"},
+            {"CONNECT", "Charlie", "Bob"}
+        };
+        List<String> result = getResult(events);
+        for (String str : result) {
+            System.out.println(str);
+        }
+    }
+    public static List<String> getResult(String[][] events) {
+        HashMap<String, Set<String>> map = new HashMap<>();
+        for (String[] event : events) {
+            String action = event[0];
+            String person_one = event[1];
+            String person_two = event[2];
+            if (action.equals("CONNECT")) {
+                map.putIfAbsent(person_one, new HashSet<>());
+                map.get(person_one).add(person_two);
+                map.putIfAbsent(person_two, new HashSet<>());
+                map.get(person_two).add(person_one);
+            } else {
+                if (map.containsKey(person_one)) {
+                    map.get(person_one).remove(person_two);
+                }
+                if (map.containsKey(person_two)) {
+                    map.get(person_two).remove(person_one);
+                }
+            }
+        }
+        return (getNumList(map));
+    }
+    public static List<String> getNumList(HashMap<String, Set<String>> map) {
+        List<String> list = new ArrayList<>();
+        for (String key : map.keySet()) {
+            if (map.get(key).size() >= 3) {
+                list.add(key);
+            }
+        }
+        return list;
+    }
+}
